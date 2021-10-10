@@ -40,8 +40,8 @@ The objectives of PyAMS is:
 *   **Licensed under:** PyAMS is free to use. No license is necessary .
 
 
-##News
-======
+## News
+
 What’s changed in versions
 
 V0.0.1
@@ -55,8 +55,8 @@ V0.0.1
 * Update Basic library: Resistor.
 * Update Source library:DC Voltage.
 
-##Note of Installation
-======================
+## Note of Installation
+
 * **Download:** `https://www.pyams.org/download/pyams.0.0.1.zip <https://www.pyams.org/download/pyams.0.0.1.zip>`__
 * **Execute:** IDEPyAMS.py
 * **OR install IDEPyAMS using pip:** pip install IDEPyAMS
