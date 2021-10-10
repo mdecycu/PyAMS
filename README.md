@@ -9,10 +9,13 @@ PyAMS: Python for Analog and Mixed Signals
 ---
 
 <p align="center">
-
+ 
   <img src="https://img.shields.io/badge/Version-0.0.1-blue" alt="V 0.0.1">
   <img src="https://img.shields.io/badge/Python->=3-blue" alt="Python 3+">
-  <img src="https://img.shields.io/badge/License-Free-blue" alt="Free">
+    
+  <a href="https://github.com/d-fathi/PyAMS/blob/main/LICENSE">
+      <img src="https://img.shields.io/badge/License-Free-blue" alt="Free">
+  </a>
 </p>
 ---
 
@@ -31,3 +34,29 @@ The objectives of PyAMS is:
 *   Simulating the circuit by AppPyAMS commands (future);
 *   PyAMS used Python3+ and works on  Linux, Windows, and OSX.
 *   **Licensed under:** PyAMS is free to use. No license is necessary .
+
+
+News
+====
+What’s changed in versions
+
+V 0.0.1
+-------
+01-10-2021	Released PyAMS 0.0.1 !
+
+* Based by Python 3+ and PyQt5.
+* Creating schematic editor (IDEPyAMS.py) for circuit design.
+* Creating symbol Editor (SymbolEditor.py) for symbol design.
+* OP analysis finished.
+* Update Basic library: Resistor.
+* Update Source library:DC Voltage.
+
+Note of Installation
+====================
+* **Download:** `https://www.pyams.org/download/pyams.0.0.1.zip <https://www.pyams.org/download/pyams.0.0.1.zip>`__
+* **Execute:** IDEPyAMS.py
+* **OR install IDEPyAMS using pip:** pip install IDEPyAMS
+* **Licensed under:** PyAMS is free to use. No license is necessary.
+
+.. note::
+    It runs on any platform that has the following packages: PyQt5 and PyQtWebEngine.
