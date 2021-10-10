@@ -1,5 +1,10 @@
+
 # PyAMS
 PyAMS: Python for Analog and Mixed Signals
+
+<h1 align="center">
+    <a href="https://www.pyams.org"><img src="https://pyams.org/logo.png" width="175px" alt="PyAMS"></a>
+</h1>
 
 **************
 What is PyAMS?
