@@ -6,6 +6,16 @@ PyAMS: Python for Analog and Mixed Signals
     <a href="https://www.pyams.org"><img src="https://pyams.org/logo.png" width="175px" alt="PyAMS"></a>
 </h1>
 
+---
+
+<p align="center">
+
+  <img src="https://img.shields.io/badge/Version-0.0.1-blue" alt="V 0.0.1">
+  <img src="https://img.shields.io/badge/Python->=3-blue" alt="Python 3+">
+  <img src="https://img.shields.io/badge/License-Free-blue" alt="Free">
+</p>
+---
+
 **************
 What is PyAMS?
 **************
@@ -18,6 +28,6 @@ The objectives of PyAMS is:
 *	Creating new symbols for models;
 *	Simulating the circuit in the selected mode of operation (future);
 *	Presenting simulation results in a dedicated waveform editor (future) and probe;
-* Simulating the circuit by AppPyAMS commands (future);
-* PyAMS used Python3+ and works on  Linux, Windows, and OSX.
-* **Licensed under:** PyAMS is free to use. No license is necessary .
+*   Simulating the circuit by AppPyAMS commands (future);
+*   PyAMS used Python3+ and works on  Linux, Windows, and OSX.
+*   **Licensed under:** PyAMS is free to use. No license is necessary .
