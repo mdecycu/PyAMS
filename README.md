@@ -59,7 +59,7 @@ V0.0.1
 
 *   Install Python 3.
 *   Add packages: PyQt5 and PyQtWebEngine by pip.
-* **Download:** <a href="https://www.pyams.org/download/PyAMS.0.0.1.zip">https://www.pyams.org/download/pyams.0.0.1.zip</a>.
+* **Download:** <a href="https://www.pyams.org/download/PyAMS.0.0.1.zip">https://www.pyams.org/download/PyAMS.0.0.1.zip</a>.
 * **Execute:** IDEPyAMS.py.
 * **OR install IDEPyAMS using pip:** pip install IDEPyAMS.
 
