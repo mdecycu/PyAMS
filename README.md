@@ -10,14 +10,18 @@ PyAMS: Python for Analog and Mixed Signals
 
 <p align="center">
  
-  <img src="https://img.shields.io/badge/Version-0.0.1-blue" alt="V 0.0.1">
-  <img src="https://img.shields.io/badge/Python->=3-blue" alt="Python 3+">
+ <a href="#News">
+    <img src="https://img.shields.io/badge/Version-0.0.1-blue" alt="V 0.0.1">
+ </a>
+  <a href="#Note of Installation">
+      <img src="https://img.shields.io/badge/Python->=3-blue" alt="Python 3+">
+  </a>
     
   <a href="https://github.com/d-fathi/PyAMS/blob/main/LICENSE">
       <img src="https://img.shields.io/badge/License-Free-blue" alt="Free">
   </a>
 </p>
----
+
 
 **************
 What is PyAMS?
@@ -36,12 +40,12 @@ The objectives of PyAMS is:
 *   **Licensed under:** PyAMS is free to use. No license is necessary .
 
 
-News
-====
+##News
+======
 What’s changed in versions
 
-V 0.0.1
--------
+V0.0.1
+--------
 01-10-2021	Released PyAMS 0.0.1 !
 
 * Based by Python 3+ and PyQt5.
@@ -51,8 +55,8 @@ V 0.0.1
 * Update Basic library: Resistor.
 * Update Source library:DC Voltage.
 
-Note of Installation
-====================
+##Note of Installation
+======================
 * **Download:** `https://www.pyams.org/download/pyams.0.0.1.zip <https://www.pyams.org/download/pyams.0.0.1.zip>`__
 * **Execute:** IDEPyAMS.py
 * **OR install IDEPyAMS using pip:** pip install IDEPyAMS
