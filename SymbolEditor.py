@@ -3,11 +3,11 @@
 # Name:        SymbolEditor
 # Author:      d.fathi
 # Created:     19/08/2021
-# Update:      01/10/2021
-# Copyright:   (c) pyams 2021
+# Update:      01/01/2022
+# Copyright:   (c) pyams 2022
 # Web:         www.PyAMS.org
-# Version:     0.0.1
-# Licence:     unlicense
+# Version:     0.0.4 (Pre-alpha)
+# Licence:     free
 # info:        Symbol Editor
 #-------------------------------------------------------------------------------
 
@@ -21,8 +21,9 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtWebChannel import QWebChannel
-from appcir import getListSignalsNodeParams
+from appcir import getListSignalsNodeParams,interAnalysis
 from dialogs import *
+import appcir
 
 
 #-------------------------------------------------------------------------------
@@ -44,9 +45,11 @@ class Document(QObject):
     def newPage(self):
         return self.typeSym
 
-    @pyqtSlot(result=list)
-    def return_list(self):
-        return [0.0, 1.5, 1.4]
+    @pyqtSlot(list,result=list)
+    def return_list(self,l):
+        return appcir.interAnalysis(l,self.setWin);
+
+
 
     @pyqtSlot(int)
     def setInt(self, i):
@@ -55,6 +58,11 @@ class Document(QObject):
     @pyqtSlot(list)
     def setList(self, i):
         print(sum(i))
+
+    @pyqtSlot(bool)
+    def itRun(self,bool_arg):
+        self.setWin.ui.actionRun.setEnabled(not(bool_arg));
+        self.setWin.ui.actionPause.setEnabled(bool_arg);
 
     @pyqtSlot(str, result=str)
     def jscallme(self, str_args):
@@ -94,6 +102,7 @@ class Mainwindow:
         self.title='Symbol Editor';
         self.pagetype='sym';
         self.modified=False;
+        self.typeAction='none';
 
         self.ui.m_webview.page().setUrl(QUrl("qrc:/index.html"));
         self.ui.statusbar.showMessage('Message in statusbar.');
@@ -107,6 +116,8 @@ class Mainwindow:
         self.ui.actionSave.triggered.connect(self.save);
         self.ui.actionSave_as.triggered.connect(self.saveAs);
         self.ui.actionNew.triggered.connect(self.new);
+        self.ui.actionPolarity.triggered.connect(self.showPolarity);
+        self.ui.actionShow_grid.triggered.connect(self.showGrid);
 
         self.ui.menuTools.menuAction().setVisible(True);
         self.ui.ToolsToolBar.setVisible(False);
@@ -126,9 +137,15 @@ class Mainwindow:
 
         self.ui.actionPin.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('pin');"));
         self.ui.actionReference_2.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('ref');"));
+        self.ui.actionRect.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('rect');"));
+        self.ui.actionEllipse.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('ellipse');"));
         self.ui.actionParamater.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('param');"));
         self.ui.actionPolyline.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('polyline');"));
         self.ui.actionWire.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('net');"));
+        self.ui.actionText.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('text');"));
+        self.ui.actionOscilloscope.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('oscilloscope');"));
+        self.ui.actionPolygon.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('polygon');"));
+        self.ui.actionArc.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('arc');"));
         self.ui.actionGnd.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addGnd();"));
         self.ui.actionProbe.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("addShape('probe');"));
         self.ui.actionEnd.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("ioEndDrawing();"));
@@ -136,8 +153,11 @@ class Mainwindow:
         self.ui.actionFlipHorizontal.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("ioTypeRotation('flipHorizontal');"));
         self.ui.actionFlipVertically.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("ioTypeRotation('flipVertical');"));
         self.ui.actionRotate.triggered.connect(lambda: self.ui.m_webview.page().runJavaScript("ioTypeRotation('rotate');"));
-        self.ui.m_webview.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.ui.m_webview.customContextMenuRequested.connect(self.openMenu)
+        self.ui.m_webview.setContextMenuPolicy(Qt.CustomContextMenu);
+        self.ui.m_webview.customContextMenuRequested.connect(self.openMenu);
+  #actionShow_grid
+        self.ui.actionAbout.triggered.connect(self.about);
+        self.w.closeEvent=self.closeEvent
 
 
     def openMenu(self,position):
@@ -148,6 +168,8 @@ class Mainwindow:
         contextMenu.addAction(self.ui.actionCut);
         contextMenu.addAction(self.ui.actionPaste);
         action = contextMenu.exec_(self.ui.m_webview.mapToGlobal(position))
+
+
 
 
     def caption(self):
@@ -167,6 +189,10 @@ class Mainwindow:
         if dialog.w.exec_():
             self.ui.m_webview.page().runJavaScript("ioSetPosProbe('"+dialog.pos+"');");
 
+    def about(self):
+        dialog =about();
+        dialog.w.exec_();
+
 
     def updatePosProbe(self):
         self.ui.m_webview.page().runJavaScript("ioGetProbesWithNetList();", self.dialogeListSignalsNodeParamsFromCircuit);
@@ -184,6 +210,7 @@ class Mainwindow:
         self.ui.actionFlipHorizontal.setEnabled(dic['selectPart']);
         self.ui.actionFlipVertically.setEnabled(dic['selectPart']);
         self.ui.actionRotate.setEnabled(dic['selectPart']);
+        self.ui.actionPolarity.setChecked(dic['showPolarity']);
         self.modified=dic['modified'];
         self.ui.statusbar.showMessage(dic['undoPos']);
         self.caption();
@@ -192,18 +219,27 @@ class Mainwindow:
     def __save(self, response):
         file = open(self.filename,'w', encoding="utf-8")
         file.write(response)
-        file.close()
+        file.close();
+        self.getTypeAction();
+
+    def getTypeAction(self):
+        if self.typeAction=='open':
+           self.open();
+        elif self.typeAction=='new':
+           self.new();
+        self.typeAction='none';
 
 
     def shakeSave(self):
         if self.modified:
-            ret = QMessageBox.question(None, 'MessageBox', "Save changes in symbole", QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel, QMessageBox.Cancel)
+            ret = QMessageBox.question(None, 'MessageBox', "Save changes ", QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel, QMessageBox.Cancel)
             if ret == QMessageBox.Yes:
                 self.save();
                 return not(self.modified);
             elif ret == QMessageBox.No:
                 return True;
             else:
+                self.typeAction='none';
                 return False;
         return True;
 
@@ -212,15 +248,19 @@ class Mainwindow:
 
 
     def new(self):
+        self.typeAction='new';
         if self.shakeSave():
+            self.typeAction='none';
             self.filename=self.filenew;
             self.ui.m_webview.page().runJavaScript("ioNewPage('"+self.pagetype+"');");
 
 
     def open(self):
+        self.typeAction='open';
         if self.shakeSave():
             fname = QFileDialog.getOpenFileName(None, 'Open file',self.pathLib,self.filetype)
             if(fname[0]!=''):
+                self.typeAction='none';
                 self.filename=fname[0];
                 f = open(fname[0], 'r', encoding="utf-8")
                 s=f.read()
@@ -239,6 +279,8 @@ class Mainwindow:
         if(fname[0]!=''):
             self.filename=fname[0];
             self.ui.m_webview.page().runJavaScript("ioGetSymbol();", self.__save);
+        else:
+            self.typeAction='none';
 
     def exportSVG(self, response):
         fname = QFileDialog.getSaveFileName(None, 'Save File to SVG form',' ',"svg file (*.svg)")
@@ -253,32 +295,60 @@ class Mainwindow:
         self.lbl1.setStyleSheet('border: 0; color:  blue;')
         self.lbl2 = QLabel("zoom: ")
         self.lbl2.setStyleSheet('border: 0; color:  red;')
+        self.lbl3 = QLabel("___")
+        self.lbl3.setStyleSheet('border: 0; color:  red;')
 
         self.ui.statusbar.reformat()
         self.ui.statusbar.setStyleSheet('border: 0; background-color: #FFF8DC;')
         self.ui.statusbar.setStyleSheet("QStatusBar::item {border: none;}")
 
         self.ui.statusbar.addPermanentWidget(VLine())
+        self.ui.statusbar.addPermanentWidget(self.lbl3)
+        self.ui.statusbar.addPermanentWidget(VLine())
         self.ui.statusbar.addPermanentWidget(self.lbl1)
         self.ui.statusbar.addPermanentWidget(VLine())
         self.ui.statusbar.addPermanentWidget(self.lbl2)
+
 
 
     def copy(self):
         self.r=Mainwindow();
         self.r.show();
 
+    def showPolarity(self):
+        if self.ui.actionPolarity.isChecked():
+            self.ui.m_webview.page().runJavaScript("showPolarity(true);");
+        else:
+            self.ui.m_webview.page().runJavaScript("showPolarity(false);");
+
+    def showGrid(self):
+        if self.ui.actionShow_grid.isChecked():
+            self.ui.m_webview.page().runJavaScript("drawing.showGrid(true);");
+        else:
+            self.ui.m_webview.page().runJavaScript("drawing.showGrid(false);");
+
+    def closeEvent(self, event):
+        if self.shakeSave():
+            event.accept()
+        else:
+            event.ignore()
+
+
 
 #-------------------------------------------------------------------------------
 # __main__: start Symbol Editor software
 #-------------------------------------------------------------------------------
 
-if __name__ == "__main__":
+def exec():
         app=QApplication(sys.argv);
-
+        import os
+        import mainwindow
+        path = os.path.dirname(mainwindow.__file__)
+        path=path.lower();
+        r=path.replace('\\','/');
         w=Mainwindow();
         w.show();
-        w.path=sys.path[0]
-        w.pathLib=w.path+'\symbols'
-
+        w.path=r
+        w.pathLib=r+'/symbols'
         sys.exit(app.exec_());
+
