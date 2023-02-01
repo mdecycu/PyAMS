@@ -2,6 +2,8 @@
 # PyAMS
 PyAMS: Python for Analog and Mixed Signals
 
+https://pypi.org/project/IDEPyAMS/
+
 https://www.circuitlab.com/
 
 <h1 align="center">
