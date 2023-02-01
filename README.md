@@ -8,6 +8,14 @@ https://www.wheelodex.org/projects/idepyams/
 
 https://www.circuitlab.com/
 
+<a href="https://link.springer.com/book/10.1007/978-1-4842-5857-6">2020 Beginning PyQt</a>
+
+<a href="https://link.springer.com/book/10.1007/978-1-4842-6603-8">2021 Modern PyQt</a>
+
+<a href="https://link.springer.com/book/10.1007/978-1-4842-7999-1">2022 Beginning PyQt</a>
+
+
+
 <h1 align="center">
     <a href="https://www.pyams.org"><img src="https://pyams.org/logo.png" width="175px" alt="PyAMS"></a>
 </h1>
